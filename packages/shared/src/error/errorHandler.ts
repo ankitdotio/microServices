@@ -15,8 +15,16 @@ export function errorHandler(
   }
   //logger.error
 
+  if (err instanceof Error) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+
   return res.status(500).json({
     success: false,
     message: "INTERNAL SERVER ERROR",
+    err,
   });
 }

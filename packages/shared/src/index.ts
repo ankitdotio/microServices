@@ -4,4 +4,4 @@ export { errorHandler } from "./error/errorHandler";
 export { httpLogger } from "./logger/httpLogger";
 export { logger } from "./logger/logger";
 export { failResponse, successResponse } from "./response/response";
-export { validateSchema } from "./validation/validation";
+export { validateBody } from "./validation/validation";

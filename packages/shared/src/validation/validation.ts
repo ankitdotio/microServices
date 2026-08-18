@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import type { ZodSchema } from "zod";
 import { AppError } from "../error/AppError";
 
-export const validateSchema = (schema: ZodSchema) => {
+export const validateBody = (schema: ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const result = schema.safeParse(req.body);
     if (!result.success) {
@@ -11,7 +11,7 @@ export const validateSchema = (schema: ZodSchema) => {
         .join(",");
       return next(new AppError(400, message));
     }
-    req.body = result;
+    req.body = result.data;
     next();
   };
 };
