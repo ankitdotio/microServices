@@ -6,9 +6,9 @@ import {
   errorHandler,
   httpLogger,
   logger,
+  requireGatewaySecret,
   successResponse,
 } from "shared";
-
 import authRoutes from "./routes/auth.routes";
 
 config({ path: resolve(process.cwd(), ".env") });
@@ -24,6 +24,8 @@ app.use(express.json());
 app.get("/health", (req, res) => {
   return successResponse(res, { success: "auth-service" }, 200);
 });
+
+app.use("/auth", requireGatewaySecret, authRoutes);
 
 app.use("/auth", authRoutes);
 

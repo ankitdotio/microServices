@@ -7,7 +7,7 @@ import { loginInput, registerInput } from "../schema/auth.schemas";
 import bcrypt from "bcryptjs";
 import { convertToPublicUser } from "../utils/auth.util";
 import { AppError, getPool } from "shared";
-import { signToken } from "../utils/jwt";
+import { signToken } from "shared";
 
 export const registerService = async (input: registerInput) => {
   const existingUser = await findByEmail(input.email);

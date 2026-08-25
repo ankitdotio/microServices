@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import * as authServices from "../services/auth.services";
-import { successResponse } from "shared";
+import { AppError, successResponse } from "shared";
 
 export const registerController = async (
   req: Request,
@@ -21,7 +21,7 @@ export const loginController = async (
   next: NextFunction,
 ) => {
   try {
-    const result = authServices.loginService(req.body);
+    const result = await authServices.loginService(req.body);
     successResponse(res, result, 200);
   } catch (error) {
     next(error);
@@ -34,7 +34,10 @@ export const getmeController = async (
   next: NextFunction,
 ) => {
   try {
-    const userId = req.body;
+    const userId = req.header("x-user-id");
+    if (!userId) {
+      throw new AppError(500, "MISSING x-user-id HEADER");
+    }
     const user = await authServices.getmeService(userId);
     return successResponse(res, user, 200);
   } catch (error) {

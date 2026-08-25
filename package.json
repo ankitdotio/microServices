@@ -12,11 +12,15 @@
   ],
   "scripts": {
     "dev:auth": "npm run dev -w authservice",
-    "db:migrate":"tsx scripts/db-migrate.ts"
+    "db:migrate": "tsx scripts/db-migrate.ts",
+    "dev:gateway":"npm run dev -w api-gateway"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
     "tsx": "^4.23.12",
     "typescript": "^7.0.2"
+  },
+  "devDependencies": {
+    "@types/express-rate-limit": "^5.1.3"
   }
 }
