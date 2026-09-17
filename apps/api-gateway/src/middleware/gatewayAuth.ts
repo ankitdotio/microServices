@@ -17,8 +17,9 @@ const stripIdentityHeaders = (req: Request) => {
 };
 
 //attaching gateway secret
-const attachGatewaySecert = (req: Request) => {
+const attachGatewaySecret = (req: Request) => {
   const secret = process.env.GATEWAY_SECRETS;
+
   if (!secret) {
     throw new AppError(500, "GATEWAY_SECRET IS NOT SET/ CONFIGURED/ MISSING");
   }
@@ -28,13 +29,13 @@ const attachGatewaySecert = (req: Request) => {
 const requestPath = (req: Request) => {
   const combined = `${req.baseUrl}${req.path}`;
   if (combined.length > 1 && combined.endsWith("/")) {
-    return combined.slice(0, 1);
+    return combined.slice(0, -1);
   }
   return combined || "/";
 };
 
 const attachUserHeader = (req: Request, userId: string, role: string) => {
-  req.headers["x-userId"] = userId;
+  req.headers["x-user-id"] = userId;
   req.headers["x-user-role"] = role;
 };
 
@@ -53,7 +54,7 @@ export const gatewayAuth = (
     stripIdentityHeaders(req);
 
     //attaching secret
-    attachGatewaySecert(req);
+    attachGatewaySecret(req);
 
     //extracting path
     const path = requestPath(req);
@@ -77,7 +78,7 @@ export const gatewayAuth = (
     //RBAC
     const allowedRole = getAllowedRoles(req.method, path);
     if (!allowedRole) {
-      throw new AppError(404, "ROUTE NOT FOUND");
+      throw new AppError(404, "ROUTE NOT FOUND gatewayauth");
     }
 
     //forbidden
@@ -87,8 +88,10 @@ export const gatewayAuth = (
 
     //attaching header
 
-    attachUserHeader(req, payload.userId, payload.userId);
+    attachUserHeader(req, payload.userId, payload.role);
+    next();
   } catch (error) {
+    console.error("GATEWAY AUTH ERROR:", error);
     if (error instanceof AppError) {
       return next(error);
 

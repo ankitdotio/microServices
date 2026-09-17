@@ -12,6 +12,7 @@ export const requireGatewaySecret = (
   next: NextFunction,
 ) => {
   const expected = process.env.GATEWAY_SECRETS;
+  console.log(expected);
   if (!expected) {
     throw new AppError(500, "GATEWAY_SECRET NOT SET IN .ENV ");
   }
@@ -20,4 +21,5 @@ export const requireGatewaySecret = (
   if (!incoming || incoming !== expected) {
     throw new AppError(403, "FORBIDDEN");
   }
+  next();
 };

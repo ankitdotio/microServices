@@ -23,6 +23,36 @@ const rbacRules: RbacRules[] = [
     path: "/auth/me",
     role: ["ADMIN", "USER"],
   },
+  {
+    method: "POST",
+    path: "/tasks",
+    role: ["ADMIN", "USER"],
+  },
+  {
+    method: "GET",
+    path: "/tasks",
+    role: ["ADMIN", "USER"],
+  },
+  {
+    method: "GET",
+    path: "tasks/:taskId",
+    role: ["ADMIN", "USER"],
+  },
+  {
+    method: "DELETE",
+    path: "tasks/:taskId",
+    role: ["ADMIN"],
+  },
+  {
+    method: "POST",
+    path: "/tasks/:taskId/attachments",
+    role: ["USER", "ADMIN"],
+  },
+  {
+    method: "GET",
+    path: "/tasks/:taskId/attachments",
+    role: ["USER", "ADMIN"],
+  },
 ];
 
 const matchpath = (pattern: string, actual: string): boolean => {
@@ -38,7 +68,7 @@ const matchpath = (pattern: string, actual: string): boolean => {
   }
 
   return patternParts.every(
-    (part, index) => part.startsWith(":") || part === actual[index],
+    (part, index) => part.startsWith(":") || part === actualParts[index],
   );
 };
 

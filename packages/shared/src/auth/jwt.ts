@@ -28,13 +28,12 @@ export const verifyToken = (token: string): JwtPayload => {
     typeof decodedToken !== "object" ||
     decodedToken === null ||
     typeof decodedToken.userId !== "string" ||
-    decodedToken.role !== "USER" ||
-    decodedToken.role !== "ADMIN"
+    (decodedToken.role !== "USER" && decodedToken.role !== "ADMIN")
   ) {
     throw new Error("INVALID PAYLOAD");
   }
   return {
-    userId: decodedToken.userID,
+    userId: decodedToken.userId,
     role: decodedToken.role,
   };
 };

@@ -6,7 +6,7 @@ import { closePool, getPool } from "../packages/shared/src/db/pool";
 config({ path: resolve(process.cwd(), "./env") });
 
 async function main() {
-  const file = process.argv[2] || "sql/001_user.sql";
+  const file = process.argv[2] || "sql/002_tasks.sql";
   const sql = readFileSync(resolve(process.cwd(), file), "utf-8");
   const pool = getPool();
   await pool.query(sql);
